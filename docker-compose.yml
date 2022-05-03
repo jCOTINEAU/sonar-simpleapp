@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  indus:
+    build: .
+    image: simpledc
+    ports:
+    - "8081:8081"
+  dev:
+    image: openjdk:11-oracle
+    build:
+      context: .
+      target: builder
+    volumes:
+      - $PWD/src:/src
+      - $PWD/dist:/dist
+    entrypoint:
+    - tail
+    command:
+    - -F
+    - /dev/null
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50M
+        reservations:
+          cpus: '0.5'
+          memory: 20M

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sonar-test
+  name: sonar-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonar-test
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: sonar-test
+    spec:
+      containers:
+      - image: postgres ## SHOULD BE A DEV OVERLAY
+        name: potgres
+        env:
+          - name: POSTGRES_PASSWORD
+            value: password
+          - name: POSTGRES_USER
+            value: user
+      - image: simpleproject:latest
+        imagePullPolicy: Never ## SHOULB BE A DEV OVERLAY
+        name: simpleproject
+        envFrom:
+        - configMapRef:
+            name: simpleapp-configmap
+
+
