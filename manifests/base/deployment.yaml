@@ -15,7 +15,16 @@ spec:
       labels:
         app: sonar-test
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
+      - name: client
+        image: busybox
+        command:
+          - "tail"
+        args:
+          - "-F"
+          - "/dev/null"
       - image: postgres ## SHOULD BE A DEV OVERLAY
         name: potgres
         env:
@@ -23,8 +32,7 @@ spec:
             value: password
           - name: POSTGRES_USER
             value: user
-      - image: simpleproject:latest
-        imagePullPolicy: Never ## SHOULB BE A DEV OVERLAY
+      - image: simpleproject
         name: simpleproject
         envFrom:
         - configMapRef:

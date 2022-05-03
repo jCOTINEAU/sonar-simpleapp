@@ -3,6 +3,13 @@ resources:
 - ../base
 namePrefix: dev-
 configMapGenerator:
-- name: simpleapp-configmap
-  behavior: merge
-  env: dev.env
+- behavior: merge
+  envs:
+  - dev.env
+  name: simpleapp-configmap
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: simpleproject
+  newName: ghcr.io/jCOTINEAU/sonar-simpleapp
+  newTag: mr-init-ci-cd
